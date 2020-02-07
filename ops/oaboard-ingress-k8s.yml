@@ -1,0 +1,58 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-oaboard
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  backend:
+    serviceName: default-http-backend
+    servicePort: 80
+  rules:
+  - http:
+      paths:
+      - path: /(.*)
+        backend:
+          serviceName: oaboard-front
+          servicePort: 8020
+      - path: /view/(.*)
+        backend:
+          serviceName: oaboard-swagger-ui
+          servicePort: 8090
+      - path: /api/(.*)
+        backend:
+          serviceName: oaboard-backend
+          servicePort: 8080
+  - host: api.oaboard
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: oaboard-backend
+            servicePort: 8080
+
+---  backend:
+---    serviceName: default-http-backend
+---    servicePort: 80
+---  rules:
+---  - host: app.oaboard
+---    http:
+---      paths:
+---      - path: /
+---        backend:
+---          serviceName: oaboard-front
+---          servicePort: 8020
+---  - host: view.oaboard
+---    http:
+---      paths:
+---      - path: /
+---        backend:
+---          serviceName: oaboard-swagger-ui
+---          servicePort: 8090
+---  - host: api.oaboard
+---    http:
+---      paths:
+---      - path: /
+---        backend:
+---          serviceName: oaboard-backend
+---          servicePort: 8080
