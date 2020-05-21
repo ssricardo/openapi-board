@@ -1,3 +1,18 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: backend-configmap
+data:
+  config.yaml: |
+    users:
+      entries:
+        -
+          name: admin
+          password: admin00
+          roles: ['MANAGER', 'AGENT']
+
+---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -38,11 +53,26 @@ spec:
         imagePullPolicy: Never
         name: openapi-board-backend
 
-        ports: 
+        ports:
           - name: http
             containerPort: 8080
+
+        env:
+          - name: spring.config.location
+            value: /etc/application/config.yaml
+
+        volumeMounts:
+          - name: backend-cfg-volume
+            mountPath: /etc/application/config.yaml
+            subPath: config.yaml
+
+      volumes:
+        - name: backend-cfg-volume
+          configMap:
+            name: backend-configmap
 
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 5
+

@@ -23,3 +23,5 @@
 hs_err_pid*
 
 .idea
+/local-dev/node-proxy/node_modules/*
+node_modules/*
