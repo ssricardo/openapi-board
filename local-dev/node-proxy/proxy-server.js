@@ -1,3 +1,5 @@
+/* Scripts with fake data for developing / testing the FE */
+
 let express = require('express');
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer({

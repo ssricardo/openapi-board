@@ -22,12 +22,13 @@ requests_log = logging.getLogger("requests.packages.urllib3")
 requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
 
+
 def postApiRecord(apiName: str, ns: str, vs: str, apiUrl: str, content):
     print('post %s' % apiName)
 
     r = requests.put(BASE_URL + '/%s/%s' % (ns, apiName),
                      headers={
-                         'Content-Type': "application/x-www-form-urlencoded"
+                         'Content-Type': "multipart/form-data"
                      },
                      data={
                          'version': vs,

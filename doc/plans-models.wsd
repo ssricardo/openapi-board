@@ -1,0 +1,65 @@
+@startuml "Request Storing - Model"
+
+class "AppRecord" as app {
+    appName str
+    namespace str
+    path str
+}
+
+class "AppSnapshot" as snap {    
+}
+
+class "AppOperation" as ope {
+    path str
+}
+
+class "RequestMemory" as req {
+    title str
+    body str
+    owner int
+    ...    
+}
+
+class "ParameterMemory" as pd {
+    name str
+    value str
+}
+
+enum "ParameterKind" as pk {
+    HEADER, QUERY, PATH...
+}
+
+enum "AppOperationType" as aot {
+    GET, POST, ...
+}
+
+app "1" -- "n" ope
+app "1" .. "n" snap
+req "n" -- "1" ope
+aot "n" -- "1" ope
+req "1" -- "n" pd
+pd "n" -- "1" pk
+
+' Descriptions
+
+note top of app 
+    A given application in a specific 
+    namespace  (current version)
+end note
+    
+note bottom of snap 
+    Keeps track of 
+    applications 
+    (historic of version)
+end note
+
+note top of req 
+    Stores requests samples
+end note
+
+note bottom of pd
+    Optional parameters of 
+    a given request sample
+end note
+
+@enduml

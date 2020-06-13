@@ -1,0 +1,24 @@
+@startuml "oaBoard-Components"
+
+[oaBoard-backend] as backend
+[oaBoard-front] as front
+
+'[swagger-ui-board] as sui  -->  dropped / legacy
+
+package oaboard-integration-support {
+    [oaboard-maven-plugin] as mvn
+    [oaboard-gradle-plugin] as grd
+    control "oaboard-java-client" as jv
+}
+
+database db
+
+backend -- db : <JPA>
+front .. backend : <REST>
+sui .. backend : <REST>
+grd -- jv
+mvn -- jv
+jv .. backend  : <REST>
+
+
+@enduml
