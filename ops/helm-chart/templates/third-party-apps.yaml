@@ -1,0 +1,142 @@
+{{- if .Values.services.mail.enabled -}}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-mail-srv
+spec:
+  selector:
+    app: sample-mail-app
+  type: NodePort
+  ports:
+    - port: 1080
+      protocol: TCP
+      targetPort: 1080
+      name: http
+    - port: 1025
+      protocol: TCP
+      targetPort: 1025
+      name: smtp
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sample-mail-app
+  name: sample-mail
+
+spec:
+  selector:
+    matchLabels:
+      app: sample-mail-app
+
+  template:
+    metadata:
+      labels:
+        app: sample-mail-app
+
+    spec:
+      containers:
+        - image: maildev/maildev
+          name: maildev
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - name: http
+              containerPort: 1080
+            - name: smtp
+              containerPort: 1025
+
+          env:
+            - name: BLA
+              value: value
+
+{{- end -}}
+
+---
+
+{{- if .Values.services.ldap.enabled -}}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: open-ldap-srv
+spec:
+  selector:
+    app: open-ldap-app
+  type: NodePort
+  ports:
+    - port: 1389
+      protocol: TCP
+      targetPort: 1389
+      name: std
+    - port: 1636
+      protocol: TCP
+      targetPort: 1636
+      name: tls
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: open-ldap-dpl
+  name: open-ldap
+
+spec:
+  selector:
+    matchLabels:
+      app: open-ldap-app
+
+  template:
+    metadata:
+      labels:
+        app: open-ldap-app
+
+    spec:
+      volumes:
+        - name: ldap-config-dir
+          configMap:
+            name: ldap-config-cm        
+
+      containers:
+        - image: bitnami/openldap:2.5.13
+          name: open-ldap
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - name: std
+              containerPort: 1389
+            - name: tls
+              containerPort: 1636
+
+          env:
+            - name: LDAP_ADMIN_USERNAME
+              value: admin
+            - name: LDAP_ADMIN_PASSWORD
+              value: admin00
+            - name: LDAP_USERS
+              value: ricardo,homer
+            - name: LDAP_PASSWORDS
+              value: test123,test000
+            - name: LDAP_BASE
+              value: dc=rss,dc=org
+            - name: LDAP_BIND_DN
+              value: cn=admin,dc=rss,dc=org
+
+#  NOT working!
+          # volumeMounts:
+          #   - name: ldap-config-dir
+          #     mountPath: /ldifs
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ldap-config-cm
+data:
+{{ (.Files.Glob "ldap/*").AsConfig | indent 2 }}
+
+{{- end -}}

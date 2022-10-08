@@ -1,0 +1,66 @@
+dn: dc=rss,dc=org
+objectclass: top
+objectclass: domain
+objectclass: extensibleObject
+dc: rss
+
+dn: ou=groups,dc=rss,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+
+dn: ou=users,dc=rss,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: users
+
+# PERMISSIONS
+dn: cn=ADMIN,ou=groups,dc=rss,dc=org
+objectclass: top
+objectclass: organizationalRole
+cn: ADMIN
+
+dn: cn=READER,ou=groups,dc=rss,dc=org
+objectclass: top
+objectclass: organizationalRole
+cn: READER
+
+dn: cn=AGENT,ou=groups,dc=rss,dc=org
+objectclass: top
+objectclass: organizationalRole
+cn: AGENT
+
+# Users
+
+dn: ou=admin,dc=rss,dc=org
+objectclass: top
+objectclass: organizationalUnit
+objectclass: person
+ou: admin
+uid: admin
+userPassword: admin00
+permission: READER
+permission: ADMIN
+permission: AGENT
+
+dn: uid=ricardo,ou=users,dc=rss,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Ricardo S
+sn: S
+uid: ricardo
+userPassword: test123
+permission: READER
+
+dn: uid=home,ou=users,dc=rss,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Homer Simpson
+sn: Simpson
+uid: homer
+userPassword: bart000
+permission: READER
