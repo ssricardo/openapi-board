@@ -1,0 +1,44 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: oac-configmap
+data:
+  MYSQL_DATABASE: oac
+  SPRING_DATASOURCE_URL: "jdbc:mysql://oac-mysql-svr:3306/oac?allowPublicKeyRetrieval=true&useSSL=false"
+
+  config.yaml: |
+    users:
+      entries:
+        -
+          name: admin
+          password: admin00
+          roles: ['MANAGER', 'AGENT']
+
+    env:
+      server-address: http://tobe.configured.localhost
+      mail-notification-enabled: true
+      main-namespace: Production
+
+    spring:
+      mail:
+        host: sample-mail
+        port: 1025
+        username: mail_user
+        password: superSecret
+        protocol: smtp
+        # properties:
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oac-secrets
+type: Opaque
+stringData:
+  JWT_PRIVATE_KEY: DXnC^E8xFm6-ectU4rXv8T7jNnxW2rdXazwxQvWwshCiEzcLQvMbDYAKECFBtyWWzqQnv5tzpGoWRdbNxXPmaLKR/jSx_FSWoij88uHaLu6zVQPfvPRUwAmRimqcUTba
+  MYSQL_USER: oac_app
+  MYSQL_PASSWORD: the123456
+  MYSQL_ROOT_PASSWORD: super-secret
+  SPRING_DATASOURCE_USERNAME: root
+  SPRING_DATASOURCE_PASSWORD: super-secret

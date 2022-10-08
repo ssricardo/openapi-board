@@ -1,6 +1,6 @@
-# oaBoard Project
+# openApi-center Project
 
-This project contains small general-purpose parts of the oaBoard project.  
+This project contains small general-purpose parts of the openApi-center project.  
 It includes:  
 
 * DevOps configs / scripts
@@ -17,7 +17,11 @@ It includes:
 
 ## Build
 
-Use the kubernetes config to setup a k8s cluster, based on docker images.  
+Use the kubernetes and helm config to setup a k8s cluster, based on docker images.  
+
+Bring the cluster up with:
+
+> helm install openapi-center ./ops/helm-chart
 
 ### From the sources
 
@@ -67,6 +71,11 @@ Example:
         
 
 An alternative way: It's also possible to use a node / express script (provided on this project) instead of above config.
+
+
+To use K8s Ingress and access the resources, first apply this base descriptors:
+
+https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
 ----
 

@@ -1,0 +1,40 @@
+kind: Service
+apiVersion: v1
+metadata:
+ name: oac-mysql-svr
+spec:
+  selector:
+    app: oac-mysql-app
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: oac-mysql-app
+  labels:
+    app: oac-mysql-app
+spec:
+  selector:
+    matchLabels:
+      app: oac-mysql-app
+  template:
+    metadata:
+      labels:
+        app: oac-mysql-app
+    spec:
+      containers:
+      - name: openapi-mysqldb
+        image: mysql:8.0.30
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3306
+        envFrom:
+        - configMapRef:
+            name: oac-configmap
+        - secretRef:
+            name: oac-secrets
+        env:      

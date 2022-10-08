@@ -1,5 +1,0 @@
-resources:
-- ./k8s-oab-backend.yml
-- ./mysql-service.yml
-patches:
-- oab-backend-mysql.yml

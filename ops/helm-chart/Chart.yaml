@@ -1,0 +1,7 @@
+apiVersion: v2
+name: openapi-center
+description: Configuration for OpenApi Center
+version: 1.0.0
+
+type: application
+appVersion: "0.5.0"

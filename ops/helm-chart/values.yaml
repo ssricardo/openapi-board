@@ -1,0 +1,28 @@
+replicaCount: 1
+
+services:
+  mail:
+    enabled: true
+  ldap:
+    enabled: false
+
+image:
+  repository: nginx    
+  tag: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  className: ""
+  annotations: {}
+
+  hosts:
+    - host: chart-example.local
+      paths:
+          pathType: ImplementationSpecific
+  tls: []
+  
+resources: {}
+
