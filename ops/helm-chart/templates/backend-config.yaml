@@ -9,24 +9,23 @@ data:
   config.yaml: |
     users:
       entries:
-        -
-          name: admin
-          password: admin00
-          roles: ['MANAGER', 'AGENT']
+        - name: admin
+          password: test00
+          roles: ['READER', 'MANAGER', 'BLUE_PERM', 'GREEN_PERM']
+        - name: agent
+          password: test00
+          roles: ['READER', 'AGENT']
+        - name: blue
+          password: accessBlueOnly
+          roles: ['READER', 'AGENT', 'BLUE_PERM']
 
     env:
-      server-address: http://tobe.configured.localhost
-      mail-notification-enabled: true
+      server-address: http://localhost:8080
+      hooks-notification-enabled: true
       main-namespace: Production
+      namespace:
+        auto-create: true
 
-    spring:
-      mail:
-        host: sample-mail
-        port: 1025
-        username: mail_user
-        password: superSecret
-        protocol: smtp
-        # properties:
 
 ---
 
